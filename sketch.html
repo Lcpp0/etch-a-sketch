@@ -1,0 +1,101 @@
+<!DOCTYPE hmtl>
+<html>
+<head>
+    <title>Etch a Sketch</title>
+    <LINK REL=StyleSheet HREF="style.css" TYPE="text/css">
+</head>
+<body>
+    <div id= "buttonsDiv" class="buttonDiv">
+    </div>
+    <div class="grid"> 
+      </div>   
+    <script>
+
+        let numberDivs =3
+
+        let container = document.querySelector('.grid')
+        container.style = 'border: 1px solid red';
+        container.setAttribute('style', 'grid-template: repeat('+ numberDivs+', 1fr)/repeat('+ numberDivs+', 1fr)');
+
+        let buttons = document.querySelector('#buttonsDiv')
+
+        const clearDraw = document.createElement('button')
+        clearDraw.setAttribute('class','btnClear')
+        clearDraw.classList.add('clearDraw')
+        clearDraw.textContent = 'Clear'
+        buttons.appendChild(clearDraw)
+    
+        const blackDraw = document.createElement('input')
+        blackDraw.setAttribute('type','radio')
+        blackDraw.setAttribute('id','blackColor')
+        blackDraw.setAttribute('name','colorSelection')
+        blackDraw.setAttribute('value','black')
+        //blackDraw.checked
+        blackDraw.classList.add('blackDraw')
+        buttons.appendChild(blackDraw)
+
+        const blackLabel = document.createElement("Label");
+        blackLabel.setAttribute("for",blackColor);
+        blackLabel.innerHTML = "Black";
+        buttons.appendChild(blackLabel);
+
+        const randomDraw = document.createElement('input')
+        randomDraw.setAttribute('type','radio')
+        randomDraw.setAttribute('id','randomColor')
+        randomDraw.setAttribute('name','colorSelection')
+        randomDraw.setAttribute('value','random')
+        randomDraw.classList.add('randomDraw')
+        buttons.appendChild(randomDraw)
+
+        const randomLabel = document.createElement("Label");
+        randomLabel.setAttribute("for",randomColor);
+        randomLabel.innerHTML = "Random";
+        buttons.appendChild(randomLabel);
+        
+        function createDivs(numberDivs){
+            for (let i = 1; i <= numberDivs*numberDivs; i++){
+                let square = document.createElement('div')
+                square.setAttribute('class', 'grid-item')
+                square.style = "border: 1px solid black"
+                square.style.backgroundColor = "white";
+                square.style.width = 550/numberDivs;
+                square.style.height = 550/numberDivs;
+                square.addEventListener('mouseover',(e)=>{
+                    let userSelection = document.querySelector('input[name="colorSelection"]:checked').value
+                    if (userSelection==='black'){
+                        e.target.style.backgroundColor = 'black'
+                    }else if (userSelection==='random'){
+                        e.target.style.backgroundColor = getRandomColor()
+                    }
+                    
+                })
+                square.classList.add('grid')
+                container.appendChild(square)
+            }
+    
+        }
+        createDivs(numberDivs)
+
+        function getRandomColor(){
+            let r = Math.floor(Math.random()*256);          
+            let g = Math.floor(Math.random()*256);          
+            let b = Math.floor(Math.random()*256);          
+            let rgb = 'rgb(' + r + ',' + g + ',' + b + ')'; 
+            return rgb
+        }
+
+        function clearGrid(){
+            while(container.firstChild){
+                container.removeChild(container.firstChild);
+            }
+        }
+
+        clearDraw.addEventListener('click', (e)=>{
+            let numberDivs=prompt("Insert the number of squares")
+            container.setAttribute('style', 'grid-template: repeat('+ numberDivs+', 1fr)/repeat('+ numberDivs+', 1fr)');
+            clearGrid()
+            createDivs(numberDivs)
+        })
+    </script>     
+</body>  
+</html>   
